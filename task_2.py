@@ -1,9 +1,12 @@
 import os
 from datetime import datetime
+import functools
+
 
 
 def logger(path):
     def __logger(old_function):
+        @functools.wraps(old_function)
         def new_function(*args, **kwargs):
             # Выполняем функцию и сохраняем результат
             result = old_function(*args, **kwargs)

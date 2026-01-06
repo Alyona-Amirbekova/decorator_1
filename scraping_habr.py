@@ -11,12 +11,12 @@ KEYWORDS = ['дизайн', 'фото', 'web', 'python']
 base_url = 'https://habr.com/ru/articles/'
 headers = Headers(browser='chrome', os='win').generate()
 
-
+@logger('get_page_content.log')
 def get_page_content(url, headers):
     response = requests.get(url, headers=headers)
     return response.text
 
-
+@logger('parse_articles.log')
 def parse_articles(html_content):
     soup = BeautifulSoup(html_content, 'html.parser')
     articles = []
@@ -63,7 +63,7 @@ def parse_articles(html_content):
 
     return articles
 
-
+@logger('find_articles_with_keywords.log')
 def find_articles_with_keywords(articles, keywords):
     matching_articles = []
     lower_keywords = [kw.lower() for kw in keywords]
@@ -74,7 +74,7 @@ def find_articles_with_keywords(articles, keywords):
 
     return matching_articles
 
-
+@logger('main_parser.log')
 def main():
     print("Начинаем выполнение main...")
 
@@ -101,11 +101,5 @@ def main():
 
 
 if __name__ == '__main__':
-    # Оборачиваем main
-    main = logger('main_parser.log')(main)
-    # Оборачиваем другие функции
-    get_page_content = logger('get_page_content.log')(get_page_content)
-    parse_articles = logger('parse_articles.log')(parse_articles)
-    find_articles_with_keywords = logger('find_articles_with_keywords.log')(find_articles_with_keywords)
 
     main()
